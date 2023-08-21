@@ -13,7 +13,14 @@
     <%= render 'layouts/header' %>
       <main>
         <p id="notice"><%= notice %></p>
+        <ul>
+          <% flash.each do |message_type, message| %>
+            <div class="flash-message <%= message_type %>"></div>
+          <% end %>
+        </ul>
       </main>
+      <%= yield %>
     <%= render 'layouts/footer' %>
   </body>
+
 </html>
