@@ -1,15 +1,13 @@
 
 <% if book.favorited_by?(current_user) %>
-  <p>
     <!--いいねされた後もう一度押したらいいねが削除されるようにしたいのでmethodはdelete-->
-    <%= link_to book_favorites_path(book), method: :delete do %>
-      ♥<%= book.favorites.count %>
+    <%= link_to book_favorites_path(book), method: :delete, style: "color: red;" do %>
+      <i class="fas fa-heart" aria-hidden="true"></i>
+      <%= book.favorites.count %>
     <% end %>
-  </p>
   <% else %>
-  <p>
     <%= link_to book_favorites_path(book), method: :post do %>
-      <span class="red-heart">♥</span><%= book.favorites.count %>
+      <i class="fas fa-heart" aria-hidden="true"></i>
+      <%= book.favorites.count %>
     <% end %>
-  </p>
 <% end %>

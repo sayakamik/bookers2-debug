@@ -7,7 +7,12 @@ class BookCommentsController < ApplicationController
     #とcomment.user_id = current_user.idを表す。
     comment.book_id = book.id
     comment.save
-    redirect_to book_path(book)
+    redirect_to request.referer
+  end
+  
+  def destroy
+    BookComment.find_by(id: params[:id], book_id: params[:book_id]).destroy
+    redirect_to request.referer
   end
 
   private
