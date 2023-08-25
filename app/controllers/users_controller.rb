@@ -6,6 +6,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @books = @user.books
     @book = Book.new
+  
   end
 
   def index
@@ -24,6 +25,8 @@ class UsersController < ApplicationController
       render :edit
     end
   end
+  
+
 
   private
 
