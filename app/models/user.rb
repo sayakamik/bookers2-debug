@@ -4,21 +4,22 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_one_attached :profile_image
+
   has_many :books, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many :book_comments, dependent: :destroy
 
-  # xxxはアソシエーションが繋がっているテーブル名、class_nameは実際のモデルの名前、foreign_keyは外部キーとして何を持つかを表しています。
-  has_many :relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
-  has_many :relationships2, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
-  #「has_many :テーブル名, through: :中間テーブル名」 の形を使って、テーブル同士が中間テーブルを通じてつながっていることを表現します。(followerテーブルとfollowedテーブルのつながりを表す）
-  # 例えば、yyyにfollowedを入れてしまうと、followedテーブルから中間テーブルを通ってfollowerテーブルにアクセスすることができなくなってしまいます。
-  #  これを防ぐためにyyyには架空のテーブル名を、zzzは実際にデータを取得しにいくテーブル名を書きます。
-  has_many :followings, through: :relationships, source: :followed
-  has_many :followers, through: :relationships2, source: :follower
-  #この結果、@user.yyyとすることでそのユーザーがフォローしている人orフォローされている人の一覧を表示することができるようになります。
+  # 自分がフォローされる（被フォロー）側の関係性 提出後修正
+  has_many :reverse_of_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
+  # 被フォロー関係を通じて参照→自分をフォローしている人 提出後修正
+  has_many :followers, through: :reverse_of_relationships, source: :follower
 
+  # 自分がフォローする（与フォロー）側の関係性
+  has_many :relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  # 与フォロー関係を通じて参照→自分がフォローしている人
+  has_many :followings, through: :relationships, source: :followed
+
+  has_one_attached :profile_image
 
   validates :name, length: { minimum: 2, maximum: 20 }, uniqueness: true
   validates :introduction, length: { maximum: 50 }
@@ -26,7 +27,7 @@ class User < ApplicationRecord
    def get_profile_image
     (profile_image.attached?) ? profile_image : 'no_image.jpg'
    end
-   
+
    # フォローしたときの処理
    def follow(user_id)
      relationships.create(followed_id: user_id)
@@ -39,5 +40,5 @@ class User < ApplicationRecord
    def following?(user)
      followings.include?(user)
    end
-   
+
 end
