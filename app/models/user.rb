@@ -25,11 +25,11 @@ class User < ApplicationRecord
   validates :introduction, length: { maximum: 50 }
 
    def get_profile_image(width, height)
-    if profile_image.attached?
-      profile_image.variant(resize: "#{width}x#{height}").processed
-    else
-      'no_image.jpg'
-    end
+     if profile_image.attached?
+       profile_image.variant(resize: "#{width}x#{height}").processed
+     else
+       'no_image.jpg'
+     end
    end
 
    # フォローしたときの処理
