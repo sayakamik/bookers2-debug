@@ -2,17 +2,19 @@ class BookCommentsController < ApplicationController
 
   def create
     book = Book.find(params[:book_id])
-    comment = current_user.book.new(book_comment_params)
+    @book_comment = BookComment.new
+    @comment = current_user.book_comments.new(book_comment_params)
     #上記１行はcomment = BookComment.new(book_comment_params)
     #とcomment.user_id = current_user.idを表す。
-    comment.book_id = book.id
-    comment.save
-    redirect_to request.referer
+    @comment.book_id = book.id
+    @comment.save
+    #redirect_to request.referer
   end
-  
+
   def destroy
-    BookComment.find_by(id: params[:id], book_id: params[:book_id]).destroy
-    redirect_to request.referer
+    @comment = BookComment.find_by(id: params[:id], book_id: params[:book_id])
+    @comment.destroy
+    #redirect_to request.referer
   end
 
   private
