@@ -24,12 +24,8 @@ class User < ApplicationRecord
   validates :name, length: { minimum: 2, maximum: 20 }, uniqueness: true
   validates :introduction, length: { maximum: 50 }
 
-   def get_profile_image(width, height)
-     if profile_image.attached?
-       profile_image.variant(resize: "#{width}x#{height}").processed
-     else
-       'no_image.jpg'
-     end
+   def get_profile_image
+    (profile_image.attached?) ? profile_image : 'no_image.jpg'
    end
 
    # フォローしたときの処理
@@ -46,18 +42,15 @@ class User < ApplicationRecord
    end
 
    # 検索方法分岐
-   def self.looks(search, word)
-    if search == "perfect_match"
-      @user = User.where("name LIKE?", "#{word}")
-    elsif search == "forward_match"
-      @user = User.where("name LIKE?","#{word}%")
-    elsif search == "backward_match"
-      @user = User.where("name LIKE?","%#{word}")
-    elsif search == "partial_match"
-      @user = User.where("name LIKE?","%#{word}%")
-    else
-      @user = User.all
-    end
+   def self.search_for(content, method)
+     if method == 'perfect'
+       User.where(name: content)
+     elsif method == 'forward'
+       User.where('name LIKE ?', content + '%')
+     elsif method == 'backward'
+       User.where('name LIKE ?', '%' + content)
+     else
+       User.where('name LIKE ?', '%' + content + '%')
+     end
    end
-
 end
