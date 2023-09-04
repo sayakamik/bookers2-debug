@@ -4,7 +4,6 @@
       $(document).on('turbolinks:load', function() {
         let elem = document.querySelector('#star_<%= book.id %>');
         if (elem == null) return;
-
         elem.innerHTML = ""
         let opt = {
           starOn: "<%= asset_path('star-on.png') %>",
