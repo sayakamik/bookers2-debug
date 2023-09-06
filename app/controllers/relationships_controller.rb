@@ -2,8 +2,8 @@ class RelationshipsController < ApplicationController
   before_action :authenticate_user!
   # フォローするとき
   def create
-    user = User.find(params[:id])  #提出後追記
-    current_user.follow(params[:user_id])
+    user = User.find(params[:user_id])  #提出後追記
+    current_user.follow(user)
     redirect_to request.referer
   end
   # フォロー外すとき
