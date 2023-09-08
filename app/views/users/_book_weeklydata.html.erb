@@ -13,18 +13,18 @@
         </thead>
         <tbody>
           <tr>
-            <td><%= @six_days_ago_book.count %></td>
-            <td><%= @five_days_ago_book.count %></td>
-            <td><%= @four_days_ago_book.count %></td>
-            <td><%= @three_days_ago_book.count %></td>
-            <td><%= @two_days_ago_book.count %></td>
-            <td><%= @yesterday_book.count %></td>
-            <td><%= @today_book.count %></td>
+            <td><%= @books.created_6daysago.count %></td>
+            <td><%= @books.created_5daysago.count %></td>
+            <td><%= @books.created_4daysago.count %></td>
+            <td><%= @books.created_3daysago.count %></td>
+            <td><%= @books.created_2daysago.count %></td>
+            <td><%= @books.created_yesterday.count %></td>
+            <td><%= @books.created_today.count %></td>
           </tr>
         </tbody>
     </table>
-
     <canvas id="myLineChart"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
      <script>
        $(document).on('turbolinks:load', function() {
          var ctx = document.getElementById("myLineChart");
