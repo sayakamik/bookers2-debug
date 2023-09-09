@@ -10,12 +10,6 @@ class UsersController < ApplicationController
     @yesterday_book = @books.created_yesterday
     @this_week_book = @books.created_this_week
     @last_week_book = @books.created_last_week
-
-    @two_days_ago_book = @books.created_2daysago
-    @three_days_ago_book = @books.created_3daysago
-    @four_days_ago_book = @books.created_4daysago
-    @five_days_ago_book = @books.created_5daysago
-    @six_days_ago_book = @books.created_6daysago
   end
 
   def index
@@ -34,7 +28,18 @@ class UsersController < ApplicationController
       render :edit
     end
   end
-
+  
+  def search
+		@user = User.find(params[:user_id])
+		@book = Book.new
+		@books = @user.books
+		if params[:created_at] == ""
+		  @search_book = "日付を選択してください"
+		else 
+		  create_at = params[:created_at]
+		  @search_book = @books.where(['created_at LIKE ? ', "#{create_at}%"]).count
+		end
+	end
 
 
   private
